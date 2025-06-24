@@ -57,7 +57,7 @@ function addTask(taskText = null, isCompleted = false) {
   taskSpan.textContent = taskText;
   if (isCompleted) taskSpan.classList.add("task-done");
 
-  // ✅ Edit button (✏️ icon)
+  
   const editBtn = document.createElement("span");
   editBtn.innerHTML = "✏️";
   editBtn.className = "edit-btn";
@@ -94,7 +94,6 @@ function addTask(taskText = null, isCompleted = false) {
     saveTasksToLocalStorage();
   };
 
-  // ✅ Delete button (🗑️ icon only)
   const deleteBtn = document.createElement("button");
   deleteBtn.innerHTML = "🗑️";
   deleteBtn.className = "delete-btn";
