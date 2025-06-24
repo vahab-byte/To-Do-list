@@ -57,7 +57,6 @@ function addTask(taskText = null, isCompleted = false) {
   taskSpan.textContent = taskText;
   if (isCompleted) taskSpan.classList.add("task-done");
 
-  
   const editBtn = document.createElement("span");
   editBtn.innerHTML = "✏️";
   editBtn.className = "edit-btn";
