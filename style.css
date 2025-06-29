@@ -43,7 +43,7 @@ h1 {
 
 .task-input button {
   padding: 10px 18px;
-  background-color: #4361ee;
+  background-color: #000000;
   color: white;
   border: none;
   border-radius: 6px;
@@ -51,7 +51,7 @@ h1 {
 }
 
 .task-input button:hover {
-  background-color: #3a56d4;
+  background-color: #080808;
 }
 
 ul#taskList {
@@ -90,18 +90,6 @@ li:hover {
   color: #777;
 }
 
-.delete-btn {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #c0392b;
-}
 
 #toast-container {
   position: fixed;
@@ -174,7 +162,7 @@ li:hover {
 }
 
 .popup-btn.confirm {
-  background-color: #e74c3c;
+  background-color: #030303;
   color: white;
 }
 
@@ -184,9 +172,51 @@ li:hover {
 }
 
 .popup-btn.confirm:hover {
-  background-color: #c0392b;
+  background-color: #000000;
 }
 
 .popup-btn.cancel:hover {
   background-color: #b2b2b2;
 }
+
+.edit-btn {
+  font-family: 'Material Symbols Outlined';
+  background-color: #000000;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+  background-color: #000000;
+}
+
+.delete-btn {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  color: white;
+  background-color: #000000;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #070707;
+}
+
+

@@ -42,7 +42,12 @@ function loadTasks() {
 function addTask(taskText = null, isCompleted = false) {
   const taskInput = document.getElementById("taskInput");
   if (!taskText) taskText = taskInput.value.trim();
-  if (taskText === "") return;
+  if (taskText === "") {
+    showPopup("Please enter the task")
+    return;
+  }
+
+
 
   const taskList = document.getElementById("taskList");
   const li = document.createElement("li");
@@ -57,13 +62,11 @@ function addTask(taskText = null, isCompleted = false) {
   taskSpan.textContent = taskText;
   if (isCompleted) taskSpan.classList.add("task-done");
 
-  // ✅ Edit button (✏️ icon)
   const editBtn = document.createElement("span");
-  editBtn.innerHTML = "✏️";
-  editBtn.className = "edit-btn";
-  editBtn.style.marginLeft = "10px";
-  editBtn.style.cursor = "pointer";
+  editBtn.className = "material-symbols-outlined edit-btn";
+  editBtn.textContent = "edit_note";
 
+  
   editBtn.onclick = function () {
     const inputField = document.createElement("input");
     inputField.type = "text";
@@ -94,12 +97,10 @@ function addTask(taskText = null, isCompleted = false) {
     saveTasksToLocalStorage();
   };
 
-  // ✅ Delete button (🗑️ icon only)
-  const deleteBtn = document.createElement("button");
-  deleteBtn.innerHTML = "🗑️";
-  deleteBtn.className = "delete-btn";
-  deleteBtn.style.marginLeft = "10px";
-  deleteBtn.style.cursor = "pointer";
+ const deleteBtn = document.createElement("button");
+deleteBtn.className = "material-symbols-outlined delete-btn";
+deleteBtn.textContent = "delete_forever";
+
   deleteBtn.onclick = function () {
     showDeletePopup(() => {
       li.remove();
@@ -148,3 +149,6 @@ function showDeletePopup(onConfirm) {
     overlay.remove();
   };
 }
+
+
+ 
