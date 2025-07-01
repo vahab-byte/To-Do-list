@@ -63,8 +63,8 @@ function addTask(taskText = null, isCompleted = false) {
   if (isCompleted) taskSpan.classList.add("task-done");
 
   const editBtn = document.createElement("span");
-  editBtn.className = "material-symbols-outlined edit-btn";
-  editBtn.textContent = "edit_note";
+editBtn.className = "material-symbols-outlined edit-btn";
+editBtn.textContent = "edit"; 
 
   
   editBtn.onclick = function () {
@@ -132,7 +132,7 @@ function showDeletePopup(onConfirm) {
   overlay.id = "custom-confirm";
   overlay.innerHTML = `
     <div class="popup-box">
-      <p class="popup-message">Delete this task?</p>
+      <p class="popup-message">Are you sure you want to delete this todo?"</p>
       <div class="popup-buttons">
         <button class="popup-btn confirm">Yes, Delete</button>
         <button class="popup-btn cancel">Cancel</button>
