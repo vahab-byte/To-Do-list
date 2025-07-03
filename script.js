@@ -43,11 +43,9 @@ function addTask(taskText = null, isCompleted = false) {
   const taskInput = document.getElementById("taskInput");
   if (!taskText) taskText = taskInput.value.trim();
   if (taskText === "") {
-    showPopup("Please enter the task")
+    showAlertPopup("Please enter a to-do.");
     return;
   }
-
-
 
   const taskList = document.getElementById("taskList");
   const li = document.createElement("li");
@@ -63,10 +61,9 @@ function addTask(taskText = null, isCompleted = false) {
   if (isCompleted) taskSpan.classList.add("task-done");
 
   const editBtn = document.createElement("span");
-editBtn.className = "material-symbols-outlined edit-btn";
-editBtn.textContent = "edit"; 
+  editBtn.className = "material-symbols-outlined edit-btn";
+  editBtn.textContent = "edit";
 
-  
   editBtn.onclick = function () {
     const inputField = document.createElement("input");
     inputField.type = "text";
@@ -97,9 +94,9 @@ editBtn.textContent = "edit";
     saveTasksToLocalStorage();
   };
 
- const deleteBtn = document.createElement("button");
-deleteBtn.className = "material-symbols-outlined delete-btn";
-deleteBtn.textContent = "delete_forever";
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "material-symbols-outlined delete-btn";
+  deleteBtn.textContent = "delete_forever";
 
   deleteBtn.onclick = function () {
     showDeletePopup(() => {
@@ -132,13 +129,15 @@ function showDeletePopup(onConfirm) {
   overlay.id = "custom-confirm";
   overlay.innerHTML = `
     <div class="popup-box">
-      <p class="popup-message">Are you sure you want to delete this todo?"</p>
+      <h3>Delete</h3>
+      <p class="popup-message">Are you sure you want to delete?</p>
       <div class="popup-buttons">
-        <button class="popup-btn confirm">Yes, Delete</button>
-        <button class="popup-btn cancel">Cancel</button>
+        <button class="popup-btn cancel">Close</button>
+        <button class="popup-btn confirm">Yes, delete</button>
       </div>
     </div>
   `;
+
   document.body.appendChild(overlay);
 
   overlay.querySelector(".confirm").onclick = () => {
@@ -150,5 +149,24 @@ function showDeletePopup(onConfirm) {
   };
 }
 
+function showAlertPopup(message) {
+  const existingPopup = document.getElementById("custom-confirm");
+  if (existingPopup) existingPopup.remove();
 
- 
+  const overlay = document.createElement("div");
+  overlay.id = "custom-confirm";
+  overlay.innerHTML = `
+    <div class="popup-box">
+      <h3>Alert</h3>
+      <p class="popup-message">${message}</p>
+      <div class="popup-buttons">
+        <button class="popup-btn confirm">OK</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  overlay.querySelector(".confirm").onclick = () => {
+    overlay.remove();
+  };
+}
