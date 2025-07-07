@@ -114,7 +114,7 @@ function addTask(taskText = null, isCompleted = false) {
   taskList.appendChild(li);
 
   if (!arguments.length) {
-    showToast("Your data saved successfully");
+    showToast("Task added successfully");
   }
 
   taskInput.value = "";
