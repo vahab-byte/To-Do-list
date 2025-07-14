@@ -1,6 +1,5 @@
 function showToast(message) {
   const container = document.getElementById("toast-container");
-
   const existingToast = container.querySelector(".toast");
   if (existingToast) existingToast.remove();
 
@@ -17,10 +16,28 @@ function showToast(message) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("taskInput");
-  input.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") addTask();
+  const taskInput = document.getElementById("taskInput");
+  const dateInput = document.getElementById("taskDate");
+  const calendarIcon = document.querySelector(".calendar-icon");
+  const inputWrapper = document.querySelector(".input-with-icon");
+
+  [taskInput, dateInput].forEach(input => {
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        addTask();
+        inputWrapper.classList.remove("open");
+        dateInput.blur();
+      }
+    });
   });
+
+  if (calendarIcon && inputWrapper) {
+    calendarIcon.addEventListener("click", function () {
+      inputWrapper.classList.toggle("open");
+      dateInput.focus();
+    });
+  }
+
   loadTasks();
 });
 
@@ -29,19 +46,25 @@ function saveTasksToLocalStorage() {
   document.querySelectorAll("#taskList li").forEach(li => {
     const taskText = li.querySelector("span").textContent;
     const completed = li.querySelector("input[type=checkbox]").checked;
-    tasks.push({ text: taskText, done: completed });
+    const dateText = li.querySelector(".task-date span:nth-child(2)")?.textContent.replace("Due: ", "") || "";
+    tasks.push({ text: taskText, done: completed, date: dateText });
   });
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach(task => addTask(task.text, task.done));
+  tasks.forEach(task => addTask(task.text, task.done, task.date));
 }
 
-function addTask(taskText = null, isCompleted = false) {
+function addTask(taskText = null, isCompleted = false, taskDate = null) {
   const taskInput = document.getElementById("taskInput");
+  const dateInput = document.getElementById("taskDate");
+  const inputWrapper = document.querySelector(".input-with-icon");
+
   if (!taskText) taskText = taskInput.value.trim();
+  if (!taskDate) taskDate = dateInput.value;
+
   if (taskText === "") {
     showAlertPopup("Please enter a to-do.");
     return;
@@ -49,6 +72,7 @@ function addTask(taskText = null, isCompleted = false) {
 
   const taskList = document.getElementById("taskList");
   const li = document.createElement("li");
+
   const taskLeft = document.createElement("div");
   taskLeft.className = "task-left";
 
@@ -59,6 +83,27 @@ function addTask(taskText = null, isCompleted = false) {
   const taskSpan = document.createElement("span");
   taskSpan.textContent = taskText;
   if (isCompleted) taskSpan.classList.add("task-done");
+
+  const dateContainer = document.createElement("div");
+  dateContainer.className = "task-date";
+  if (taskDate) {
+    const icon = document.createElement("span");
+    icon.className = "material-symbols-outlined";
+    icon.textContent = "calendar_month";
+
+    const dateText = document.createElement("span");
+    dateText.textContent = `Due: ${taskDate}`;
+    dateText.style.marginLeft = "4px";
+
+    dateContainer.appendChild(icon);
+    dateContainer.appendChild(dateText);
+  }
+
+  checkbox.onchange = function () {
+    taskSpan.classList.toggle("task-done", this.checked);
+    showToast(this.checked ? "Marked as complete" : "Marked as incomplete");
+    saveTasksToLocalStorage();
+  };
 
   const editBtn = document.createElement("span");
   editBtn.className = "material-symbols-outlined edit-btn";
@@ -88,12 +133,6 @@ function addTask(taskText = null, isCompleted = false) {
     });
   };
 
-  checkbox.onchange = function () {
-    taskSpan.classList.toggle("task-done", this.checked);
-    showToast(this.checked ? "Marked as complete" : "Marked as incomplete");
-    saveTasksToLocalStorage();
-  };
-
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "material-symbols-outlined delete-btn";
   deleteBtn.textContent = "delete_forever";
@@ -106,18 +145,25 @@ function addTask(taskText = null, isCompleted = false) {
     });
   };
 
+  const actionBtns = document.createElement("div");
+  actionBtns.className = "task-actions";
+  actionBtns.appendChild(editBtn);
+  actionBtns.appendChild(deleteBtn);
+
   taskLeft.appendChild(checkbox);
   taskLeft.appendChild(taskSpan);
-  taskLeft.appendChild(editBtn);
+  if (taskDate) taskLeft.appendChild(dateContainer);
+
   li.appendChild(taskLeft);
-  li.appendChild(deleteBtn);
+  li.appendChild(actionBtns);
   taskList.appendChild(li);
 
-  if (!arguments.length) {
-    showToast("Task added successfully");
-  }
+  if (!arguments.length) showToast("Task added successfully");
 
   taskInput.value = "";
+  dateInput.value = "";
+  dateInput.blur();
+  if (inputWrapper) inputWrapper.classList.remove("open");
   saveTasksToLocalStorage();
 }
 
@@ -144,6 +190,7 @@ function showDeletePopup(onConfirm) {
     onConfirm();
     overlay.remove();
   };
+
   overlay.querySelector(".cancel").onclick = () => {
     overlay.remove();
   };
@@ -164,9 +211,7 @@ function showAlertPopup(message) {
       </div>
     </div>
   `;
-  document.body.appendChild(overlay);
 
-  overlay.querySelector(".confirm").onclick = () => {
-    overlay.remove();
-  };
+  document.body.appendChild(overlay);
+  overlay.querySelector(".confirm").onclick = () => overlay.remove();
 }

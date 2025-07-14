@@ -1,102 +1,178 @@
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: rgb(178, 252, 188);
-  padding: 30px;
-  color: #333;
+  font-family: 'Inter', sans-serif;
+  background-color: #c2f8d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
+
 .todo-container {
-  max-width: 500px;
-  margin: auto;
-  background: #efffe4;
-  padding: 20px 25px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #f8fff7;
+  padding: 30px 28px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 460px;
 }
+
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #2a2a2a;
 }
 
-.task-input {
+
+.task-input-container {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-.task-input input {
+.input-with-icon {
+  position: relative;
   flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
 }
 
-.task-input button {
-  padding: 10px 18px;
-  background-color: #000000;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.input-with-icon input {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+
+.calendar-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 22px;
   cursor: pointer;
 }
 
-.task-input button:hover {
-  background-color: #080808;
+
+.add-btn {
+  padding: 12px 18px;
+  background-color: #1c1c1c;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
+
+.add-btn:hover {
+  background-color: #000;
+}
+
 
 ul#taskList {
   list-style: none;
 }
 
+
 li {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 12px 15px;
-  margin-bottom: 12px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
-  gap: 10px;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
 }
 
-
-li:hover {
-  transform: translateY(-2px);
-}
 
 .task-left {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
   flex: 1;
   overflow: hidden;
-  white-space: nowrap;
+}
+
+.task-left input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4caf50;
+  margin-right: 8px;
 }
 
 
 .task-left span {
-  font-size: 17px;
+  font-size: 16px;
+  color: #222;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
 
 .task-done {
   text-decoration: line-through;
-  color: #777;
+  color: #999;
 }
+
+.task-date {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f1f1;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-top: 4px;
+  gap: 6px;
+  color: #333;
+  font-weight: 500;
+}
+
+.task-date .material-symbols-outlined {
+  font-size: 16px;
+  color: #333;
+}
+
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  font-family: 'Material Symbols Outlined';
+  font-size: 22px;
+  color: #444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  color: #000;
+}
+
 
 #toast-container {
   position: fixed;
@@ -109,7 +185,7 @@ li:hover {
   background-color: #333;
   color: #fff;
   padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-top: 10px;
   animation: fadeIn 0.3s ease, fadeOut 0.3s ease 2.7s;
 }
@@ -123,6 +199,7 @@ li:hover {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(20px); }
 }
+
 
 #custom-confirm {
   position: fixed;
@@ -139,28 +216,24 @@ li:hover {
 
 .popup-box {
   background: #fff;
-  padding: 24px 28px;
-  border-radius: 8px;
+  padding: 24px;
+  border-radius: 10px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-in-out;
-  font-family: Arial, sans-serif;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .popup-box h3 {
   font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 600;
+  margin-bottom: 12px;
   color: #222;
-  text-align: left;
 }
 
 .popup-message {
   font-size: 16px;
   color: #444;
   margin-bottom: 25px;
-  text-align: left;
 }
 
 .popup-buttons {
@@ -172,11 +245,10 @@ li:hover {
 .popup-btn {
   padding: 8px 14px;
   border: none;
-  font-weight: bold;
-  border-radius: 4px;
+  font-weight: 600;
+  border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .popup-btn.cancel {
@@ -190,45 +262,29 @@ li:hover {
 
 .popup-btn.confirm {
   background-color: #28a745;
-  color: #fff;
+  color: white;
 }
 
 .popup-btn.confirm:hover {
   background-color: #218838;
 }
 
-.edit-btn {
-  font-family: 'Material Symbols Outlined';
-  color: #333;
-  font-size: 32px;
-  padding: 6%;
-  border-radius: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
+
+.hidden-date {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: none;
+  z-index: 10;
 }
 
-.edit-btn:hover {
-  color: rgb(7, 7, 7);
+.input-with-icon.open .hidden-date {
+  display: block;
 }
-
-.delete-btn {
-  font-family: 'Material Symbols Outlined';
-  font-size: 32px;
-  color: #333;
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-}
-
-.delete-btn:hover {
-  color: #000;
-}
-
