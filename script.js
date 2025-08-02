@@ -45,6 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+
+  document.addEventListener("click",function (e){
+    const isInside =  inputWrapper.contains(e.target) || e.target === calendarIcon;
+    if (!isInside){
+      inputWrapper.classList.remove("open");
+      dateInput.blur();
+    }
+
+  });
+
+  document.addEventListener("keydown",function (e){
+    if (e.key === "esc"){
+      inputWrapper.classList.remove("open");
+      dateInput.blur();
+    }
+  });
+
   loadTasks();
 });
 
