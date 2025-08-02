@@ -21,6 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const calendarIcon = document.querySelector(".calendar-icon");
   const inputWrapper = document.querySelector(".input-with-icon");
 
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+ const formattedToday = `${yyyy}-${mm}-${dd}`;
+  dateInput.min = formattedToday;
+
   [taskInput, dateInput].forEach(input => {
     input.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
