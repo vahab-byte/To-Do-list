@@ -104,9 +104,11 @@ function addTask(taskText = null, isCompleted = false, taskDate = null) {
   checkbox.type = "checkbox";
   checkbox.checked = isCompleted;
 
-  const taskSpan = document.createElement("span");
-  taskSpan.textContent = taskText;
-  if (isCompleted) taskSpan.classList.add("task-done");
+ const taskSpan = document.createElement("div");
+taskSpan.className = "task-text-box";
+taskSpan.textContent = taskText;
+if (isCompleted) taskSpan.classList.add("task-done");
+
 
   const dateContainer = document.createElement("div");
   dateContainer.className = "task-date";

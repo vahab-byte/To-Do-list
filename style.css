@@ -51,12 +51,19 @@ h1 {
   width: 100%;
   padding: 12px 16px;
   padding-right: 40px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  border: none;
+  border-radius: 12px;
   font-size: 15px;
   outline: none;
+  background-color: #f1f1f1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.2s ease;
 }
 
+.input-with-icon input:focus {
+  background-color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
 
 .calendar-icon {
   position: absolute;
@@ -104,11 +111,12 @@ li {
 
 .task-left {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
   flex: 1;
   overflow: hidden;
+  flex-wrap: wrap;
 }
 
 .task-left input[type="checkbox"] {
@@ -288,3 +296,15 @@ li {
 .input-with-icon.open .hidden-date {
   display: block;
 }
+
+.task-text-box {
+  background: #f1f1f1;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
