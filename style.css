@@ -308,3 +308,12 @@ li {
   word-wrap: break-word;
 }
 
+li.overdue{
+  background-color: #ffd6d6;
+  color: #c62828;
+}
+
+li.overdue .task-date{
+  background-color: #ffebee;
+  color: #b71c1c;
+}

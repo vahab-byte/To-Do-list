@@ -21,12 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const calendarIcon = document.querySelector(".calendar-icon");
   const inputWrapper = document.querySelector(".input-with-icon");
 
+
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const dd = String(today.getDate()).padStart(2, '0');
- const formattedToday = `${yyyy}-${mm}-${dd}`;
-  dateInput.min = formattedToday;
+  dateInput.min = `${yyyy}-${mm}-${dd}`;
+
 
   [taskInput, dateInput].forEach(input => {
     input.addEventListener("keydown", function (event) {
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+
   if (calendarIcon && inputWrapper) {
     calendarIcon.addEventListener("click", function () {
       inputWrapper.classList.toggle("open");
@@ -45,18 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-
-  document.addEventListener("click",function (e){
-    const isInside =  inputWrapper.contains(e.target) || e.target === calendarIcon;
-    if (!isInside){
+  document.addEventListener("click", function (e) {
+    const isInside = inputWrapper.contains(e.target) || e.target === calendarIcon;
+    if (!isInside) {
       inputWrapper.classList.remove("open");
       dateInput.blur();
     }
-
   });
 
-  document.addEventListener("keydown",function (e){
-    if (e.key === "esc"){
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
       inputWrapper.classList.remove("open");
       dateInput.blur();
     }
@@ -68,13 +69,14 @@ document.addEventListener("DOMContentLoaded", function () {
 function saveTasksToLocalStorage() {
   const tasks = [];
   document.querySelectorAll("#taskList li").forEach(li => {
-    const taskText = li.querySelector("span").textContent;
+    const taskText = li.querySelector(".task-text-box")?.textContent || "";
     const completed = li.querySelector("input[type=checkbox]").checked;
     const dateText = li.querySelector(".task-date span:nth-child(2)")?.textContent.replace("Due: ", "") || "";
     tasks.push({ text: taskText, done: completed, date: dateText });
   });
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
 
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -104,11 +106,10 @@ function addTask(taskText = null, isCompleted = false, taskDate = null) {
   checkbox.type = "checkbox";
   checkbox.checked = isCompleted;
 
- const taskSpan = document.createElement("div");
-taskSpan.className = "task-text-box";
-taskSpan.textContent = taskText;
-if (isCompleted) taskSpan.classList.add("task-done");
-
+  const taskSpan = document.createElement("div");
+  taskSpan.className = "task-text-box";
+  taskSpan.textContent = taskText;
+  if (isCompleted) taskSpan.classList.add("task-done");
 
   const dateContainer = document.createElement("div");
   dateContainer.className = "task-date";
@@ -129,6 +130,7 @@ if (isCompleted) taskSpan.classList.add("task-done");
     taskSpan.classList.toggle("task-done", this.checked);
     showToast(this.checked ? "Marked as complete" : "Marked as incomplete");
     saveTasksToLocalStorage();
+    applyOverdueHighlight(li, taskDate, this.checked);
   };
 
   const editBtn = document.createElement("span");
@@ -191,7 +193,25 @@ if (isCompleted) taskSpan.classList.add("task-done");
   dateInput.blur();
   if (inputWrapper) inputWrapper.classList.remove("open");
   saveTasksToLocalStorage();
-}
+
+    applyOverdueHighlight(li, taskDate, isCompleted);
+  }
+
+  function applyOverdueHighlight(li, taskDate, isCompleted) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (taskDate) {
+      const dueDate = new Date(taskDate);
+      dueDate.setHours(0, 0, 0, 0);
+
+      if (dueDate < today && !isCompleted) {
+        li.classList.add("overdue");
+      } else {
+        li.classList.remove("overdue");
+      }
+    }
+  }
 
 function showDeletePopup(onConfirm) {
   const existingPopup = document.getElementById("custom-confirm");
