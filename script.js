@@ -15,19 +15,33 @@ function showToast(message) {
   }, 3000);
 }
 
+function updateTaskCounters() {
+  const tasks = document.querySelectorAll("#taskList li");
+  const total = tasks.length;
+  let completed = 0;
+
+  tasks.forEach(task => {
+    const checkbox = task.querySelector("input[type=checkbox]");
+    if (checkbox && checkbox.checked) completed++;
+  });
+
+  const pending = total - completed;
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("completedCount").textContent = completed;
+  document.getElementById("pendingCount").textContent = pending;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const taskInput = document.getElementById("taskInput");
   const dateInput = document.getElementById("taskDate");
   const calendarIcon = document.querySelector(".calendar-icon");
   const inputWrapper = document.querySelector(".input-with-icon");
 
-
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const dd = String(today.getDate()).padStart(2, '0');
   dateInput.min = `${yyyy}-${mm}-${dd}`;
-
 
   [taskInput, dateInput].forEach(input => {
     input.addEventListener("keydown", function (event) {
@@ -38,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
 
   if (calendarIcon && inputWrapper) {
     calendarIcon.addEventListener("click", function () {
@@ -54,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
       dateInput.blur();
     }
   });
-
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
@@ -75,12 +87,13 @@ function saveTasksToLocalStorage() {
     tasks.push({ text: taskText, done: completed, date: dateText });
   });
   localStorage.setItem("tasks", JSON.stringify(tasks));
+  updateTaskCounters();
 }
-
 
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.forEach(task => addTask(task.text, task.done, task.date));
+  updateTaskCounters();
 }
 
 function addTask(taskText = null, isCompleted = false, taskDate = null) {
@@ -129,8 +142,8 @@ function addTask(taskText = null, isCompleted = false, taskDate = null) {
   checkbox.onchange = function () {
     taskSpan.classList.toggle("task-done", this.checked);
     showToast(this.checked ? "Marked as complete" : "Marked as incomplete");
-    saveTasksToLocalStorage();
     applyOverdueHighlight(li, taskDate, this.checked);
+    saveTasksToLocalStorage();
   };
 
   const editBtn = document.createElement("span");
@@ -186,35 +199,37 @@ function addTask(taskText = null, isCompleted = false, taskDate = null) {
   li.appendChild(actionBtns);
   taskList.appendChild(li);
 
-  if (!arguments.length) showToast("Task added successfully");
+  if (taskText === taskInput.value.trim() && taskDate === dateInput.value) {
+    showToast("Task added successfully");
+  }
 
   taskInput.value = "";
   dateInput.value = "";
   dateInput.blur();
   if (inputWrapper) inputWrapper.classList.remove("open");
+
   saveTasksToLocalStorage();
+  applyOverdueHighlight(li, taskDate, isCompleted);
+}
 
-    applyOverdueHighlight(li, taskDate, isCompleted);
-  }
+function applyOverdueHighlight(li, taskDate, isCompleted) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  function applyOverdueHighlight(li, taskDate, isCompleted) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  if (taskDate) {
+    const dueDate = new Date(taskDate);
+    dueDate.setHours(0, 0, 0, 0);
 
-    if (taskDate) {
-      const dueDate = new Date(taskDate);
-      dueDate.setHours(0, 0, 0, 0);
-
-      if (dueDate < today && !isCompleted) {
-        li.classList.add("overdue");
-      } else {
-        li.classList.remove("overdue");
-      }
+    if (dueDate < today && !isCompleted) {
+      li.classList.add("overdue");
+    } else {
+      li.classList.remove("overdue");
     }
   }
+}
 
 function showDeletePopup(onConfirm) {
-  const existingPopup = document.getElementById("custom-confirm");
+  let existingPopup = document.getElementById("custom-confirm");
   if (existingPopup) existingPopup.remove();
 
   const overlay = document.createElement("div");
@@ -243,7 +258,7 @@ function showDeletePopup(onConfirm) {
 }
 
 function showAlertPopup(message) {
-  const existingPopup = document.getElementById("custom-confirm");
+  let existingPopup = document.getElementById("custom-confirm");
   if (existingPopup) existingPopup.remove();
 
   const overlay = document.createElement("div");

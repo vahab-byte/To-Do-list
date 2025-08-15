@@ -11,16 +11,25 @@
 <body>
   <div class="todo-container">
     <h1>To-Do List</h1>
+
+    <div class="task-counters">
+      <span>Total: <strong id="totalCount">0</strong></span>
+      <span>Completed: <strong id="completedCount">0</strong></span>
+      <span>Pending: <strong id="pendingCount">0</strong></span>
+    </div>
+
     <div class="task-input-container">
-     <div class="input-with-icon">
-  <input type="text" id="taskInput" placeholder="Enter your task..." />
-  <span class="material-symbols-outlined calendar-icon">calendar_month</span>
-<input type="date" id="taskDate" class="hidden-date" />
-</div>
+      <div class="input-with-icon">
+        <input type="text" id="taskInput" placeholder="Enter your task..." />
+        <span class="material-symbols-outlined calendar-icon">calendar_month</span>
+        <input type="date" id="taskDate" class="hidden-date" />
+      </div>
       <button class="add-btn" onclick="addTask()">ADD</button>
     </div>
+
     <ul id="taskList"></ul>
   </div>
+
   <div id="toast-container"></div>
   <script src="script.js"></script>
 </body>

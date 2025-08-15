@@ -317,3 +317,16 @@ li.overdue .task-date{
   background-color: #ffebee;
   color: #b71c1c;
 }
+
+.task-counters{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 15px;
+  background: #29ff94;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #2a2a2a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
