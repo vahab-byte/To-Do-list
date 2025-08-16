@@ -330,3 +330,43 @@ li.overdue .task-date{
   color: #2a2a2a;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
+
+.task-filters{
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 20px 0 ;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filter-buttons{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0 20px 0; 
+  flex-wrap: wrap;
+
+}
+
+.filter-btn{
+  padding: 8px 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #e0ffe8;
+  color: #1c1c1c;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-btn:hover{
+  background-color: #c3fbd7;
+}
+
+.filter-btn.active{
+  background-color: #28a745;
+  color: #fff;
+}

@@ -18,6 +18,12 @@
       <span>Pending: <strong id="pendingCount">0</strong></span>
     </div>
 
+    <div class = "task-filters">
+      <button onclick="setFilter('All')" class="filter-btn active">All</button>
+      <button onclick="setFilter('Completed')" class="filter-btn">Completed</button>
+      <button onclick="setFilter('Pending')" class="filter-btn">Pending</button>
+    </div>
+
     <div class="task-input-container">
       <div class="input-with-icon">
         <input type="text" id="taskInput" placeholder="Enter your task..." />

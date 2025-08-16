@@ -1,3 +1,38 @@
+let currentFilter = 'All';
+
+function setFilter(filter) {
+  currentFilter = filter;
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  document
+    .querySelector(`.filter-btn:nth-child(${filter === "All" ? 1 : filter === "Completed" ? 2 : 3})`)
+    .classList.add("active");
+
+  filterTasks();
+}
+
+function filterTasks() {
+  const taskItems = document.querySelectorAll('#taskList li');
+
+  taskItems.forEach(item => {
+    const checkbox = item.querySelector("input[type=checkbox]");
+    const isCompleted = checkbox && checkbox.checked;
+
+    if (
+      currentFilter === 'All' ||
+      (currentFilter === 'Completed' && isCompleted) ||
+      (currentFilter === 'Pending' && !isCompleted)
+    ) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
 function showToast(message) {
   const container = document.getElementById("toast-container");
   const existingToast = container.querySelector(".toast");
@@ -210,6 +245,8 @@ function addTask(taskText = null, isCompleted = false, taskDate = null) {
 
   saveTasksToLocalStorage();
   applyOverdueHighlight(li, taskDate, isCompleted);
+
+filterTasks();
 }
 
 function applyOverdueHighlight(li, taskDate, isCompleted) {
